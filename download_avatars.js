@@ -2,6 +2,7 @@ var request = require('request');
 var secrets = require('./secrets.js');
 var fs = require('fs');
 
+
 console.log('Welcome to the Github Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -12,19 +13,20 @@ function getRepoContributors(repoOwner, repoName, cb) {
     }
   };
 
-
-
-  request(options, function(err, res, body) {
-    var parsedBody = JSON.parse(body);
-    cb(err, parsedBody);
-
-    parsedBody.forEach(function(user) {
-      console.log(user.avatar_url);
-    });
+request(options, function(err, res, body) {
+    cb(err, body);
   });
 }
 
-//getRepoContributors('jquery', 'jquery', function(err, result) {});
+
+getRepoContributors('jquery', 'jquery', function(err, result) {
+  var parsedBody = JSON.parse(result);
+  parsedBody.forEach(function(user) {
+    var url = user.avatar_url;
+    var path = 'avatars/' + user.login + '.png';
+    downloadImageByURL(url, path);
+  });
+});
 
 function downloadImageByURL(url, filePath) {
   request.get(url)
@@ -39,4 +41,3 @@ function downloadImageByURL(url, filePath) {
     console.log("Downloading images...");
 }
 
-downloadImageByURL("https://avatars0.githubusercontent.com/u/1615?v=4", 'avatars/avatar.png');
