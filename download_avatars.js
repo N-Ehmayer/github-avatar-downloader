@@ -21,7 +21,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 
 
-if (args === undefined) {
+if (args.length === 2) {
 
   getRepoContributors(args[0], args[1], function(err, result) {
     var parsedBody = JSON.parse(result);
